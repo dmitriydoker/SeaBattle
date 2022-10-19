@@ -3,6 +3,7 @@
 void menu(int& activeOption) {
 	system("cls");
 	printFrame(menu_width, menu_height);
+	SetColor(TEXT_COLOR, BACKGROUND_COLOR);
 
 	int options = 3;
 	bool run = true;
@@ -11,11 +12,11 @@ void menu(int& activeOption) {
 		centerCursor("Морський бій", 2);
 		cout << "Морський бій";
 
-		centerCursor(" В бій! ", centerOfNumInOptions(1, 3));
+		centerCursor(" В бій! ", centerOfNumInOptions(1, 2));
 		isActiveButton(activeOption == 1);
 		cout << " В бій! ";
 
-		centerCursor(" Статистика ", centerOfNumInOptions(2, 3));
+		centerCursor(" Статистика ", centerOfNumInOptions(2, 2));
 		isActiveButton(activeOption == 2);
 		cout << " Статистика ";
 
@@ -23,8 +24,36 @@ void menu(int& activeOption) {
 		isActiveButton(activeOption == 3);
 		cout << " Вихід ";
 
-		getKey(run, activeOption, options);
+		getKeyMenu(run, activeOption, options);
 	}
+}
+
+void showStatistics(const Player* current_player)
+{
+	system("cls");
+	printFrame(menu_width, menu_height);
+
+	SetCursorPosition(Xcenter + 6, Ycenter + 2);
+	cout << "Статистика " << current_player->login;
+
+	
+	SetCursorPosition(Xcenter + 6, Ycenter + (menu_height - STATS_AMOUNT) / 2);
+	cout << "Зіграно: " << current_player->stats[GAMES_PLAYED] << " ігор" << endl;
+
+	SetCursorPosition(Xcenter + 6, Ycenter + (menu_height - STATS_AMOUNT) / 2 + 1);
+	cout << "Виграшів: " << current_player->stats[WINS] << endl;
+
+	SetCursorPosition(Xcenter + 6, Ycenter + (menu_height - STATS_AMOUNT) / 2 + 2);
+	cout << "Відсоток виграшу: " << current_player->stats[WINRATE] << "%" << endl;
+
+	/*SetCursorPosition(Xcenter + 6, Ycenter + (menu_height - STATS_AMOUNT) / 2 + 3);
+	cout << "Знищено кораблів: " << current_player->stats[SHIPS_DESTROYED] << endl;*/
+
+	centerCursor(" Назад ", menu_height - 3);
+	SetColor(BLACK, RED);
+	cout << " Назад ";
+	SetColor(WHITE, BLACK);
+	_getch();
 }
 
 int gameMode() {
@@ -51,19 +80,9 @@ int gameMode() {
 		isActiveButton(activeOption == 3);
 		cout << " Назад ";
 
-		getKey(run, activeOption, options);
+		getKeyMenu(run, activeOption, options);
 	}
-	switch (activeOption)
-	{
-	case options: // exit
-		return EXIT;
-	case 1:
-		return PLAYER_VS_BOT;
-	case 2:
-		return BOT_VS_BOT;
-	default:
-		break;
-	}
+	return activeOption;
 }
 
 int choosePositioning()
@@ -87,62 +106,35 @@ int choosePositioning()
 		isActiveButton(activeOption == 2);
 		cout << " Автоматично ";
 
-		getKey(run, activeOption, options);
+		getKeyMenu(run, activeOption, options);
 	}
-
-	switch (activeOption)
-	{
-	case 1: // manual
-		return false;
-	case 2: // auto
-		return true;
-	default:
-		break;
-	}
+	return activeOption;
 }
 
-void showStatistics(const Player* current_player)
-{
-	system("cls");
-	printFrame(menu_width + 10, menu_height);
-
-	centerCursor("Статистика ", 2);
-	cout << "Статистика" << current_player->login;
-
-	centerCursor("Зіграно: ", centerOfNumInOptions(1, 5));
-	cout << "Зіграно: " << current_player->stats[GAMES_PLAYED] << " ігор" << endl;
-	centerCursor("Виграшів: ", centerOfNumInOptions(2, 5));
-	cout << "Виграшів: " << current_player->stats[WINS] << endl;
-	centerCursor("Відсоток виграшу: ", centerOfNumInOptions(3, 5));
-	cout << "Відсоток виграшу: " << current_player->stats[WINRATE] << "%" << endl;
-	centerCursor("Знищено кораблів: ", centerOfNumInOptions(4, 5));
-	cout << "Знищено кораблів: " << current_player->stats[SHIPS_DESTROYED] << endl;
-
-	centerCursor(" Назад ", centerOfNumInOptions(5, 5));
-	SetColor(BLACK, RED);
-	cout << " Назад ";
-	SetColor(WHITE, BLACK);
-	_getch();
-}
-
-bool pregame_settings() {
+int pregame_settings(Player* current_user) {
 	int gamemode = gameMode();
 	
 	if (gamemode == EXIT) {
-		return false;
+		return EXIT;
 	}
 	if (gamemode == PLAYER_VS_BOT) {
+		current_user->stats[GAMES_PLAYED]++;
+
 		int positioning = choosePositioning();
 
 		if (positioning == MANUAL_POSITIONING) {
-			
+			manualPosition();
+			autoPosition(bot_field);
 		}
 		else if (positioning == AUTO_POSITIONING) {
-
+			autoPosition(player_field);
+			autoPosition(bot_field);
 		}
 		//current_user->stats[1]++;
 	}
 	else if (gamemode == BOT_VS_BOT) {
-		//autolocate x2
+		autoPosition(player_field);
+		autoPosition(bot_field);
 	}
+	return gamemode;
 }

@@ -1,13 +1,20 @@
 #include "Header.h"
 
-int players_amount = 0;
-Player* current_player;
-Player* players;
-
 void SetCursorPosition(short x, short y)
 {
 	COORD coord = { x, y };
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
+
+void ShowConsoleCursor(bool showFlag)
+{
+	HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
+
+	CONSOLE_CURSOR_INFO     cursorInfo;
+
+	GetConsoleCursorInfo(out, &cursorInfo);
+	cursorInfo.bVisible = showFlag; // set the cursor visibility
+	SetConsoleCursorInfo(out, &cursorInfo);
 }
 
 void SetColor(ConsoleColor text, ConsoleColor background)
@@ -33,7 +40,7 @@ void printFrame(const int& x, const int& y)
 	SetColor(TEXT_COLOR, BACKGROUND_COLOR);
 }
 
-void getKey(bool& run, int& activeOption, const int& optionAmount)
+void getKeyMenu(bool& run, int& activeOption, const int& optionAmount)
 {
 	int key;
 	key = _getch();
@@ -48,9 +55,8 @@ void getKey(bool& run, int& activeOption, const int& optionAmount)
 		run = false;
 	}
 
-	if (key == ARROW_START) { //первый код от клавиш стрелок
-		key = _getch(); //получаем второй код
-
+	if (key == ARROW_START) { 
+		key = _getch();
 
 		if (key == DOWN_ARROW) {
 			activeOption++;
@@ -65,6 +71,7 @@ void getKey(bool& run, int& activeOption, const int& optionAmount)
 			}
 		}
 	}
+	SetColor(TEXT_COLOR, BACKGROUND_COLOR);
 }
 
 bool in(int& ship, int* arr)
@@ -79,8 +86,10 @@ bool in(int& ship, int* arr)
 	return false;
 }
 
-void centerCursor(string text, int option_count) {
-	SetCursorPosition(Xcenter + (menu_width - text.length()) / 2 + 1, Ycenter + option_count); //центрує назву по центру вікна
+void centerCursor(string text, int yExtend) {
+	int xExtend = (menu_width - text.length()) / 2;
+	text.length() % 2 ? xExtend++ : 0;
+	SetCursorPosition(Xcenter + xExtend, Ycenter + yExtend);
 }
 
 int centerOfNumInOptions(int num, int options) {

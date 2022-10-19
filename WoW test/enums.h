@@ -18,11 +18,12 @@ enum ConsoleColor {
 };
 
 enum Stats {
+    STATS_AMOUNT = 3,
     GAMES_PLAYED = 0, WINS = 1,
     WINRATE = 2, SHIPS_DESTROYED = 3
 };
 
-enum CeilStatus {
+enum CellStatus {
     EMPTY = 0, ALIVE = 1, DAMAGED = 2,
     DROWN = 3, DUMMY = 4
 };
@@ -31,4 +32,14 @@ enum PreGame {
     PLAYER_VS_BOT = 1, BOT_VS_BOT= 2,
     MANUAL_POSITIONING = 1, AUTO_POSITIONING = 2,
     EXIT = 3
+};
+
+enum FieldStatus {
+    ALLY = 1, ENEMY = 2
+};
+
+enum Directions {
+    NO_DIRECTION = 0,
+    UP = 1, DOWN = 2, LEFT = 3, RIGHT = 4,
+    FOUND_ALIVE = 5, DROWN_ALREADY = 6
 };
