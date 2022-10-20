@@ -39,7 +39,7 @@ int selectUser() {
 		{
 			centerCursor(players[i].login, centerOfNumInOptions(i, players_amount));
 			isActiveButton(activeUser == i + 1);
-			cout << " " << players[i].login << " ";
+			cout << players[i].login;
 		}
 
 		centerCursor(" + Створити нового гравця ", menu_height - 3);
@@ -69,12 +69,10 @@ void sign_in(int active_user) {
 		cout << "Пароль: ";
 		getline(cin, check_password);
 
-		if (check_password == players[active_user - 1].password)
-		{
+		if (check_password == players[active_user - 1].password) {
 			valid_password = true;
 		}
-		else
-		{
+		else {
 			SetCursorPosition(Xcenter + 3, Ycenter + (menu_height - 3) / 2 + 2);
 			cout << "Невірний пароль!";
 			_getch();
@@ -116,8 +114,7 @@ void createMenuHead() {
 }
 
 void create_valid_login(Player &newPlayer) {
-	do
-	{
+	do {
 		createMenuHead();
 
 		SetCursorPosition(Xcenter + 3, Ycenter + (menu_height - 2) / 2);
@@ -131,8 +128,7 @@ void create_valid_login(Player &newPlayer) {
 			_getch();
 			continue;
 		}
-		for (size_t i = 0; i < players_amount; i++)
-		{
+		for (size_t i = 0; i < players_amount; i++) {
 			if (newPlayer.login == players[i].login) {
 				valid_login = false;
 				SetCursorPosition(Xcenter + 3, Ycenter + (menu_height - 2) / 2 + 2);
@@ -159,7 +155,7 @@ void create_valid_password(Player& newPlayer) {
 		cout << "Пароль: ";
 		getline(cin, newPlayer.password);
 		
-		if (newPlayer.password.length() == 0) {
+		if (newPlayer.password.length() < 5) {
 			SetCursorPosition(Xcenter + 3, Ycenter + (menu_height - 2) / 2 + 4);
 			cout << "Пароль дуже короткий!";
 			_getch();

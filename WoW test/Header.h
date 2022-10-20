@@ -51,7 +51,7 @@ void savePlayers();
 
 
 
-bool saveExist();
+bool saveExists(Player* current_player);
 
 void deleteSaving();
 

@@ -21,7 +21,7 @@ int main() {
 			run = false;
 			break;
 		case 1: // continue game
-			if (saveExist()) {
+			if (saveExists(current_user)) {
 				game(current_user, "load game");
 			}
 			break;

@@ -15,7 +15,7 @@ void game(Player* current_user, string game_status) {
 	else if (game_status == "load game") {
 		loadGame();
 		gmode = PLAYER_VS_BOT;
-		coinflip = 1;
+		coinflip = 1; // game starts with player`s turn
 	}
 
 	do {

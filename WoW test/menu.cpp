@@ -1,5 +1,8 @@
 #include "Header.h"
 
+Player* player;
+string fileName;
+
 void menu(int& activeOption) {
 	system("cls");
 	printFrame(menu_width, menu_height);
@@ -113,6 +116,9 @@ int choosePositioning()
 }
 
 int pregame_settings(Player* current_user) {
+	player = current_user;
+	fileName = player->login + "_save.txt";
+
 	int gamemode = gameMode();
 	
 	if (gamemode == EXIT) {
@@ -143,8 +149,12 @@ int pregame_settings(Player* current_user) {
 
 
 
-bool saveExist() {
-	ifstream file("Saving.txt");
+bool saveExists(Player* current_player) {
+	player = current_player;
+	fileName = player->login + "_save.txt";
+
+	ifstream file(fileName);
+
 	string buffer;
 	getline(file, buffer);
 
@@ -155,13 +165,13 @@ bool saveExist() {
 }
 
 void deleteSaving() {
-	ofstream fileF("Saving.txt");
-	fileF << "false";
-	fileF.close();
+	ofstream file(fileName);
+	file << "false";
+	file.close();
 }
 
 void loadGame() {
-	ifstream file("Saving.txt");
+	ifstream file(fileName);
 	string buffer;
 	getline(file, buffer);
 
@@ -185,7 +195,7 @@ void loadGame() {
 }
 
 void saveGame() {
-	ofstream file("Saving.txt");
+	ofstream file(fileName);
 	file << "true" << endl;
 
 	for (size_t x = 0; x < MAP_SIZE; x++) {
@@ -233,6 +243,7 @@ void pauseGame() {
 
 	if (activeOption == 2) {
 		saveGame();
+		system("cls");
 		exit(0);
 	}
 	else if (activeOption == 1) {
