@@ -79,13 +79,13 @@ void printCell(int field[10][10], int x, int y) {
 	switch (field[x][y])
 	{
 	case ALIVE:
-		/*if (field == player_field) {
+		if (field == player_field) {
 			cout << "[]";
 		}
 		else {
 			cout << "  ";
-		}*/
-		cout << "[]";
+		}
+		//cout << "[]";
 		break;
 	case DAMAGED:
 		SetColor(BLACK, RED);
@@ -515,6 +515,10 @@ void setCursor() {
 void shotButtons(bool & run) {
 	int key = _getch();
 
+	if (key == ESC) {
+		pauseGame();
+	}
+
 	if (key == ENTER) {
 		run = shotStatus(bot_field, xShot, yShot);
 	}
@@ -552,7 +556,7 @@ void shotButtons(bool & run) {
 void shoot() {
 	bool run = true;
 	do {
-		if (end()) { break; }
+		if (end()) break; 
 
 		setField(bot_field);
 		setCursor();

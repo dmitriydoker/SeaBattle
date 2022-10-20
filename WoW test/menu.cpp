@@ -5,23 +5,27 @@ void menu(int& activeOption) {
 	printFrame(menu_width, menu_height);
 	SetColor(TEXT_COLOR, BACKGROUND_COLOR);
 
-	int options = 3;
+	int options = 4;
 	bool run = true;
 	while (run) {
 		SetColor(YELLOW, BACKGROUND_COLOR);
 		centerCursor("Морський бій", 2);
 		cout << "Морський бій";
 
-		centerCursor(" В бій! ", centerOfNumInOptions(1, 2));
+		centerCursor(" Продовжити ", centerOfNumInOptions(1, 3));
 		isActiveButton(activeOption == 1);
-		cout << " В бій! ";
+		cout << " Продовжити ";
 
-		centerCursor(" Статистика ", centerOfNumInOptions(2, 2));
+		centerCursor(" Нова гра ", centerOfNumInOptions(2, 3));
 		isActiveButton(activeOption == 2);
+		cout << " Нова гра ";
+
+		centerCursor(" Статистика ", centerOfNumInOptions(3, 3));
+		isActiveButton(activeOption == 3);
 		cout << " Статистика ";
 
 		centerCursor(" Вихід ", menu_height - 3);
-		isActiveButton(activeOption == 3);
+		isActiveButton(activeOption == 4);
 		cout << " Вихід ";
 
 		getKeyMenu(run, activeOption, options);
@@ -35,7 +39,6 @@ void showStatistics(const Player* current_player)
 
 	SetCursorPosition(Xcenter + 6, Ycenter + 2);
 	cout << "Статистика " << current_player->login;
-
 	
 	SetCursorPosition(Xcenter + 6, Ycenter + (menu_height - STATS_AMOUNT) / 2);
 	cout << "Зіграно: " << current_player->stats[GAMES_PLAYED] << " ігор" << endl;
@@ -46,12 +49,10 @@ void showStatistics(const Player* current_player)
 	SetCursorPosition(Xcenter + 6, Ycenter + (menu_height - STATS_AMOUNT) / 2 + 2);
 	cout << "Відсоток виграшу: " << current_player->stats[WINRATE] << "%" << endl;
 
-	/*SetCursorPosition(Xcenter + 6, Ycenter + (menu_height - STATS_AMOUNT) / 2 + 3);
-	cout << "Знищено кораблів: " << current_player->stats[SHIPS_DESTROYED] << endl;*/
-
 	centerCursor(" Назад ", menu_height - 3);
 	SetColor(BLACK, RED);
 	cout << " Назад ";
+
 	SetColor(WHITE, BLACK);
 	_getch();
 }
@@ -130,11 +131,113 @@ int pregame_settings(Player* current_user) {
 			autoPosition(player_field);
 			autoPosition(bot_field);
 		}
-		//current_user->stats[1]++;
 	}
 	else if (gamemode == BOT_VS_BOT) {
 		autoPosition(player_field);
 		autoPosition(bot_field);
 	}
+
+	deleteSaving();
 	return gamemode;
+}
+
+
+
+bool saveExist() {
+	ifstream file("Saving.txt");
+	string buffer;
+	getline(file, buffer);
+
+	if (buffer == "true") {
+		return true;
+	}
+	return false;
+}
+
+void deleteSaving() {
+	ofstream fileF("Saving.txt");
+	fileF << "false";
+	fileF.close();
+}
+
+void loadGame() {
+	ifstream file("Saving.txt");
+	string buffer;
+	getline(file, buffer);
+
+	for (size_t x = 0; x < MAP_SIZE; x++) {
+		for (size_t y = 0; y < MAP_SIZE; y++) {
+			file >> player_field[x][y];
+		}
+		getline(file, buffer);
+	}
+	getline(file, buffer);
+
+	for (size_t x = 0; x < MAP_SIZE; x++) {
+		for (size_t y = 0; y < MAP_SIZE; y++) {
+			file >> bot_field[x][y];
+		}
+		getline(file, buffer);
+	}
+
+	file.close();
+	deleteSaving();
+}
+
+void saveGame() {
+	ofstream file("Saving.txt");
+	file << "true" << endl;
+
+	for (size_t x = 0; x < MAP_SIZE; x++) {
+		for (size_t y = 0; y < MAP_SIZE; y++) {
+			file << player_field[x][y] << "  ";
+		}
+		file << endl;
+	}
+
+	file << endl;
+
+	for (size_t x = 0; x < MAP_SIZE; x++) {
+		for (size_t y = 0; y < MAP_SIZE; y++) {
+			file << bot_field[x][y] << "  ";
+		}
+		file << endl;
+	}
+
+	file.close();
+}
+
+void pauseGame() {
+	SetColor(TEXT_COLOR, BACKGROUND_COLOR);
+	system("cls");
+	printFrame(menu_width, menu_height);
+
+	int activeOption = 1;
+	int options = 2;
+	bool run = true;
+	while (run) {
+		SetColor(YELLOW, BACKGROUND_COLOR);
+		centerCursor("Пауза", 2);
+		cout << "Пауза";
+
+		centerCursor(" Продовжити ", centerOfNumInOptions(1, 2));
+		isActiveButton(activeOption == 1);
+		cout << " Продовжити ";
+
+		centerCursor(" Зберегти і вийти", centerOfNumInOptions(2, 2));
+		isActiveButton(activeOption == 2);
+		cout << " Зберегти і вийти ";
+
+		getKeyMenu(run, activeOption, options);
+	}
+
+	if (activeOption == 2) {
+		saveGame();
+		exit(0);
+	}
+	else if (activeOption == 1) {
+		system("cls");
+		setField(player_field);
+		setField(bot_field);
+	}
 }

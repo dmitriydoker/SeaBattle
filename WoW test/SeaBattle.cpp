@@ -16,14 +16,19 @@ int main() {
 		menu(activeOption);
 
 		switch (activeOption) {
-		case 3: // exit
+		case 4: // exit
 			system("cls");
 			run = false;
 			break;
-		case 1: // game
-			game(current_user);
+		case 1: // continue game
+			if (saveExist()) {
+				game(current_user, "load game");
+			}
 			break;
-		case 2: // statistics
+		case 2: // new game
+			game(current_user, "new game");
+			break;
+		case 3: // statistics
 			showStatistics(current_user);
 			break;
 		default:

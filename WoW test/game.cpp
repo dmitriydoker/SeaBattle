@@ -4,10 +4,19 @@ Player* user;
 
 void getWinner(int empty_field[10][10]);
 
-void game(Player* current_user) {
-	gmode = pregame_settings(current_user);
-
-	if (gmode == EXIT) return;
+void game(Player* current_user, string game_status) {
+	user = current_user;
+	int coinflip = rand() % 2;
+	
+	if (game_status == "new game") {
+		gmode = pregame_settings(current_user);
+		if (gmode == EXIT) return;
+	}
+	else if (game_status == "load game") {
+		loadGame();
+		gmode = PLAYER_VS_BOT;
+		coinflip = 1;
+	}
 
 	do {
 		system("cls");
@@ -16,8 +25,14 @@ void game(Player* current_user) {
 		setField(bot_field);
 
 		if (gmode == PLAYER_VS_BOT) {
-			shoot();
-			bot_shot(bot1_AI, player_field);
+			if (coinflip) {
+				shoot();
+				bot_shot(bot1_AI, player_field);
+			}
+			else {
+				bot_shot(bot1_AI, player_field);
+				shoot();
+			}
 		}
 		else if (gmode == BOT_VS_BOT) {
 			bot_shot(bot1_AI, player_field);
@@ -58,23 +73,23 @@ void getWinner(int empty_field[10][10]) {
 	if (gmode == PLAYER_VS_BOT) {
 		if (empty_field == bot_field) {
 			SetCursorPosition(30, 2);
-			cout << user->login << " виграв!!!";
+			cout << user->login << " переміг!!!";
 			user->stats[WINS]++;
 		}
 		else if (empty_field == player_field) {
 			SetCursorPosition(30, 2);
-			cout << "Бот виграв!!!";
+			cout << "Бот переміг!!!";
 		}
 	}
 
 	if (gmode == BOT_VS_BOT) {
 		if (empty_field == bot_field) {
 			SetCursorPosition(30, 2);
-			cout << "Бот 1 виграв!!!";
+			cout << "Бот 1 переміг!!!";
 		}
 		else if (empty_field == player_field) {
 			SetCursorPosition(30, 2);
-			cout << "Бот 2 виграв!!!";
+			cout << "Бот 2 переміг!!!";
 		}
 	}
 }

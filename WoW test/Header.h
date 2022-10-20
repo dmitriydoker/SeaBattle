@@ -47,15 +47,21 @@ Player* authorisation();
 
 void createUser();
 
-void deletePlayer(Player* delete_player);
-
 void savePlayers();
 
 
 
+bool saveExist();
+
+void deleteSaving();
+
 int pregame_settings(Player* current_user);
 
-void game(Player* current_user);
+void loadGame();
+
+void game(Player* current_user, string game_status);
+
+void pauseGame();
 
 bool end();
 
