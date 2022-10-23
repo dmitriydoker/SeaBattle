@@ -137,13 +137,13 @@ int pregame_settings(Player* current_user) {
 			autoPosition(player_field);
 			autoPosition(bot_field);
 		}
+		deleteSaving();
 	}
 	else if (gamemode == BOT_VS_BOT) {
 		autoPosition(player_field);
 		autoPosition(bot_field);
 	}
 
-	deleteSaving();
 	return gamemode;
 }
 

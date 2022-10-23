@@ -6,8 +6,10 @@ using namespace std;
 
 void projectSettings();
 
+
 int main() {
 	projectSettings();
+
 	Player *current_user = authorisation();
 
 	bool run = true;

@@ -29,14 +29,12 @@ void loadPlayers() {
 int selectUser() {
 	int activeUser = 1;
 	bool run = true;
-	do
-	{
+	do {
 		SetColor(YELLOW, BACKGROUND_COLOR);
 		centerCursor("¬х≥д", 2);
 		cout << "¬х≥д";
 
-		for (size_t i = 0; i < players_amount; i++)
-		{
+		for (size_t i = 0; i < players_amount; i++) {
 			centerCursor(players[i].login, centerOfNumInOptions(i, players_amount));
 			isActiveButton(activeUser == i + 1);
 			cout << players[i].login;
@@ -67,13 +65,15 @@ void sign_in(int active_user) {
 		string check_password;
 		SetCursorPosition(Xcenter + 3, Ycenter + (menu_height - 3) / 2 + 2);
 		cout << "ѕароль: ";
+		SetColor(BLACK, BLACK);
 		getline(cin, check_password);
+		SetColor(WHITE, BLACK);
 
 		if (check_password == players[active_user - 1].password) {
 			valid_password = true;
 		}
 		else {
-			SetCursorPosition(Xcenter + 3, Ycenter + (menu_height - 3) / 2 + 2);
+			SetCursorPosition(Xcenter + 3, Ycenter + (menu_height - 3) / 2 + 4);
 			cout << "Ќев≥рний пароль!";
 			_getch();
 		}
@@ -102,7 +102,7 @@ Player* authorisation()
 
 
 
-void createMenuHead() {
+void MenuHead() {
 	system("cls");
 	printFrame(menu_width, menu_height);
 
@@ -115,7 +115,7 @@ void createMenuHead() {
 
 void create_valid_login(Player &newPlayer) {
 	do {
-		createMenuHead();
+		MenuHead();
 
 		SetCursorPosition(Xcenter + 3, Ycenter + (menu_height - 2) / 2);
 		cout << "Ћог≥н: ";
@@ -144,9 +144,8 @@ void create_valid_login(Player &newPlayer) {
 }
 
 void create_valid_password(Player& newPlayer) {
-	do
-	{
-		createMenuHead();
+	do {
+		MenuHead();
 
 		SetCursorPosition(Xcenter + 3, Ycenter + (menu_height - 2) / 2);
 		cout << "Ћог≥н: " << newPlayer.login;

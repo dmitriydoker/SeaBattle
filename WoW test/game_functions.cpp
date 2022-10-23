@@ -106,8 +106,7 @@ void printCell(int field[10][10], int x, int y) {
 	}
 }
 
-void setField(int field[10][10])
-{
+void setField(int field[10][10]) {
 	int xStart, yStart;
 	int field_status = field == player_field ? ALLY : ENEMY;
 
@@ -115,16 +114,13 @@ void setField(int field[10][10])
 	setFrame(xStart, yStart, field_status);
 
 	// sets field
-	for (size_t y = 0; y < MAP_SIZE; y++)
-	{
-		for (size_t x = 0; x < MAP_SIZE; x++)
-		{
+	for (size_t y = 0; y < MAP_SIZE; y++) {
+		for (size_t x = 0; x < MAP_SIZE; x++) {
 			SetCursorPosition(xStart + x * 2, yStart + y);
 			chessCellColor(x, y);
 			printCell(field, x, y);
 		}
 	}
-	SetColor(WHITE, BLACK);
 }
 
 
@@ -200,9 +196,9 @@ bool canChoose(int* ships)
 int chooseShip(int * availableShips) {
 	int activeShip = 1;
 	bool run = true;
-	do
-	{
+	do {
 		system("cls");
+		SetColor(WHITE, BLACK);
 		setField(player_field);
 
 		SetCursorPosition(botFieldStartX, CONSOLE_HEIGHT / 2 - 2);
@@ -361,8 +357,7 @@ void printShip(int ship_len, int x ,int y, bool rotated) {
 
 }
 
-void setShip(int ship, int * availableShips)
-{
+void setShip(int ship, int * availableShips) {
 	system("cls");
 	int x = 0, y = 0;
 	bool set = false;
