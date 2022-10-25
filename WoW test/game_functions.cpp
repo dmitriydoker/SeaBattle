@@ -135,8 +135,7 @@ bool getRandBool() {
 	return rand() % 2;
 }
 
-void autoPosition(int field[MAP_SIZE][MAP_SIZE])
-{
+void autoPosition(int field[MAP_SIZE][MAP_SIZE]) {
 	int ships[] = { 4, 3, 3, 2, 2, 2, 1, 1, 1, 1 }; // Всі версії кораблів та їх кількість
 	int x, y, ship_len;
 	bool rotated;
@@ -578,12 +577,12 @@ int findDirection(int x, int y, int field[10][10]) {
 			}
 		}
 	}
-	if (dirX == NO_DIRECTION and dirY == NO_DIRECTION)  return DROWN_ALREADY; 
 
 	if (dirX > x)  return RIGHT; 
 	if (dirX < x)  return LEFT;
 	if (dirY > y)  return DOWN; 
 	if (dirY < y)  return UP; 
+	else return DROWN_ALREADY;
 }
 
 int inverseDir(int dir) {
@@ -647,12 +646,12 @@ void drownOnDirection(int x, int y, int field[10][10], int direction) {
 	do {
 		if (!inField(x) or !inField(y)) { break; }
 
-		if (field[x][y] == DUMMY) { break; }
+		if (field[x][y] == DUMMY) break;
 
 		field[x][y] = DROWN;
 		setDummies(x, y, field);
 
-		if (direction == DROWN_ALREADY) { break; }
+		if (direction == DROWN_ALREADY) break;
 
 		processOnDirection(x, y, direction);
 	} while (true);

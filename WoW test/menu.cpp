@@ -164,6 +164,29 @@ bool saveExists(Player* current_player) {
 	return false;
 }
 
+void saveGame() {
+	ofstream file(fileName);
+	file << "true" << endl;
+
+	for (size_t x = 0; x < MAP_SIZE; x++) {
+		for (size_t y = 0; y < MAP_SIZE; y++) {
+			file << player_field[x][y] << "  ";
+		}
+		file << endl;
+	}
+
+	file << endl;
+
+	for (size_t x = 0; x < MAP_SIZE; x++) {
+		for (size_t y = 0; y < MAP_SIZE; y++) {
+			file << bot_field[x][y] << "  ";
+		}
+		file << endl;
+	}
+
+	file.close();
+}
+
 void deleteSaving() {
 	ofstream file(fileName);
 	file << "false";
@@ -192,29 +215,6 @@ void loadGame() {
 
 	file.close();
 	deleteSaving();
-}
-
-void saveGame() {
-	ofstream file(fileName);
-	file << "true" << endl;
-
-	for (size_t x = 0; x < MAP_SIZE; x++) {
-		for (size_t y = 0; y < MAP_SIZE; y++) {
-			file << player_field[x][y] << "  ";
-		}
-		file << endl;
-	}
-
-	file << endl;
-
-	for (size_t x = 0; x < MAP_SIZE; x++) {
-		for (size_t y = 0; y < MAP_SIZE; y++) {
-			file << bot_field[x][y] << "  ";
-		}
-		file << endl;
-	}
-
-	file.close();
 }
 
 void pauseGame() {
