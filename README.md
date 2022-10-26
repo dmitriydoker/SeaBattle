@@ -36,7 +36,7 @@
 
 Горизонталі зазвичай нумерують зверху вниз, а вертикалі позначають буквами зліва направо.
 
-<img src="Gameplay_Screenshots/Empty_Fields.png" width=35% alt="Пусте поле">
+<img src="Gameplay_Screenshots/Empty_Field.png" width=35% alt="Пусте поле">
 
 </div>
 
