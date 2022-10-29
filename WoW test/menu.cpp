@@ -3,6 +3,7 @@
 Player* player;
 string fileName;
 
+
 void menu(int& activeOption) {
 	system("cls");
 	printFrame(menu_width, menu_height);
@@ -248,13 +249,13 @@ void pauseGame() {
 		getKeyMenu(run, activeOption, options);
 	}
 
+	system("cls");
+
 	if (activeOption == 2) {
 		saveGame();
-		system("cls");
 		exit(0);
 	}
 	else if (activeOption == 1) {
-		system("cls");
 		setField(player_field);
 		setField(bot_field);
 	}

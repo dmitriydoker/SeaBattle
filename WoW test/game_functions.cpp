@@ -79,13 +79,13 @@ void printCell(int field[10][10], int x, int y) {
 	switch (field[x][y])
 	{
 	case ALIVE:
-		/*if (field == player_field) {
+		if (field == player_field) {
 			cout << "[]";
 		}
 		else {
 			cout << "  ";
-		}*/
-		cout << "[]";
+		}
+		//cout << "[]";
 		break;
 	case DAMAGED:
 		SetColor(BLACK, RED);
@@ -450,7 +450,7 @@ void shotComment(int x, int y, int field[10][10], string text) {
 		cout << comment[i];
 		Sleep(25);
 	}
-	Sleep(555);
+	Sleep(666);
 
 	setField(field);
 }

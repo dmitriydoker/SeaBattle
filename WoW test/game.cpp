@@ -32,7 +32,6 @@ void game(Player* current_user, string game_status) {
 	} while (!end());
 	
 	getWinner(current_user);
-	_getch();
 
 	clearField(player_field);
 	clearField(bot_field);
@@ -61,6 +60,8 @@ void getWinner(Player* current_user) {
 			cout << "Бот 2 переміг!!!";
 		}
 	}
+	savePlayers();
+	_getch();
 }
 
 bool end() {
