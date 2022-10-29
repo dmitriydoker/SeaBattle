@@ -115,36 +115,42 @@ int choosePositioning()
 	return activeOption;
 }
 
-int pregame_settings(Player* current_user) {
+void pregame_settings(Player* current_user, string game_status, int & coinflip) {
 	player = current_user;
 	fileName = player->login + "_save.txt";
 
-	int gamemode = gameMode();
-	
-	if (gamemode == EXIT) {
-		return EXIT;
+	if (game_status == "load game") {
+		loadGame();
+		gmode = PLAYER_VS_BOT;
+		coinflip = 1; // game starts with player`s turn
+
 	}
-	if (gamemode == PLAYER_VS_BOT) {
-		current_user->stats[GAMES_PLAYED]++;
+	else {
+		gmode = gameMode();
+		coinflip = rand() % 2;
 
-		int positioning = choosePositioning();
+		if (gmode == EXIT) return;
+	
+		if (gmode == PLAYER_VS_BOT) {
+			current_user->stats[GAMES_PLAYED]++;
 
-		if (positioning == MANUAL_POSITIONING) {
-			manualPosition();
-			autoPosition(bot_field);
+			int positioning = choosePositioning();
+
+			if (positioning == MANUAL_POSITIONING) {
+				manualPosition();
+				autoPosition(bot_field);
+			}
+			else if (positioning == AUTO_POSITIONING) {
+				autoPosition(player_field);
+				autoPosition(bot_field);
+			}
+			deleteSaving();
 		}
-		else if (positioning == AUTO_POSITIONING) {
+		else if (gmode == BOT_VS_BOT) {
 			autoPosition(player_field);
 			autoPosition(bot_field);
 		}
-		deleteSaving();
 	}
-	else if (gamemode == BOT_VS_BOT) {
-		autoPosition(player_field);
-		autoPosition(bot_field);
-	}
-
-	return gamemode;
 }
 
 
@@ -183,8 +189,9 @@ void saveGame() {
 		}
 		file << endl;
 	}
-
 	file.close();
+
+	savePlayers();
 }
 
 void deleteSaving() {

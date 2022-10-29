@@ -1,22 +1,13 @@
 #include "Header.h"
 
-Player* user;
-
-void getWinner(int empty_field[10][10]);
+int(*empty_field)[10][10];
+void getWinner(Player* current_user);
 
 void game(Player* current_user, string game_status) {
-	user = current_user;
-	int coinflip = rand() % 2;
-	
-	if (game_status == "new game") {
-		gmode = pregame_settings(current_user);
-		if (gmode == EXIT) return;
-	}
-	else if (game_status == "load game") {
-		loadGame();
-		gmode = PLAYER_VS_BOT;
-		coinflip = 1; // game starts with player`s turn
-	}
+	int coinflip;
+
+	pregame_settings(current_user, game_status, coinflip);
+	if (gmode == EXIT) return;
 
 	do {
 		system("cls");
@@ -39,10 +30,37 @@ void game(Player* current_user, string game_status) {
 			bot_shot(bot2_AI, bot_field);
 		}
 	} while (!end());
+	
+	getWinner(current_user);
 	_getch();
 
 	clearField(player_field);
 	clearField(bot_field);
+}
+
+void getWinner(Player* current_user) {
+	if (gmode == PLAYER_VS_BOT) {
+		if ((*empty_field) == bot_field) {
+			SetCursorPosition(30, 2);
+			cout << current_user->login << " переміг!!!";
+			current_user->stats[WINS]++;
+		}
+		else if ((*empty_field) == player_field) {
+			SetCursorPosition(30, 2);
+			cout << "Бот переміг!!!";
+		}
+	}
+
+	if (gmode == BOT_VS_BOT) {
+		if ((*empty_field) == bot_field) {
+			SetCursorPosition(30, 2);
+			cout << "Бот 1 переміг!!!";
+		}
+		else if ((*empty_field) == player_field) {
+			SetCursorPosition(30, 2);
+			cout << "Бот 2 переміг!!!";
+		}
+	}
 }
 
 bool end() {
@@ -60,36 +78,11 @@ bool end() {
 		}
 
 		if (end == true) {
-			getWinner(*field);
+			empty_field = &(*field);
 			return true;
 		}
 
 		field = &bot_field;
 	} 
 	return false;
-}
-
-void getWinner(int empty_field[10][10]) {
-	if (gmode == PLAYER_VS_BOT) {
-		if (empty_field == bot_field) {
-			SetCursorPosition(30, 2);
-			cout << user->login << " переміг!!!";
-			user->stats[WINS]++;
-		}
-		else if (empty_field == player_field) {
-			SetCursorPosition(30, 2);
-			cout << "Бот переміг!!!";
-		}
-	}
-
-	if (gmode == BOT_VS_BOT) {
-		if (empty_field == bot_field) {
-			SetCursorPosition(30, 2);
-			cout << "Бот 1 переміг!!!";
-		}
-		else if (empty_field == player_field) {
-			SetCursorPosition(30, 2);
-			cout << "Бот 2 переміг!!!";
-		}
-	}
 }

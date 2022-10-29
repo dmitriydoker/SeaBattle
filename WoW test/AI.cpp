@@ -152,7 +152,7 @@ void bot_shot(AI &bot_AI, int enemy_field[10][10]) {
 	bool run = true;
 
 	do {
-		if (end()) { break; }
+		if (end())  break; 
 
 		fillAI(bot_AI, x, y, direction, enemy_field);
 		setupShot(enemy_field, x, y, direction, bot_AI); 
